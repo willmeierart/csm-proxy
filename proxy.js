@@ -1,6 +1,6 @@
 require('dotenv').config()
 const fetch = require('node-fetch')
-const API_URL = process.env.API_URL
+const API_URL = 'http://video.clyffordstillmuseum.org/static/feed/reactdata/'
 
 function fetchData(){
   return fetch(API_URL)
