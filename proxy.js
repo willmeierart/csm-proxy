@@ -13,7 +13,7 @@ function fetchData(){
 function getMP4(id){
   return fetch(`${VIMEO}${id}/config`)
   .then((res)=>{
-    return res.json().then((json)=>json)
+    return res.json().then((json)=>json.request.files.progressive)
   })
 }
 
