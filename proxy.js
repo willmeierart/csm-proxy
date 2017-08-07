@@ -18,4 +18,4 @@ function getMP4(id){
 }
 
 
-module.exports = {fetchData}
+module.exports = {fetchData, getMP4}
