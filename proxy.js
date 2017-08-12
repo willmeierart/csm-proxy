@@ -26,18 +26,25 @@ function getMP4(id){
 }
 
 function legitMP4(id){
-  return lib.request({
-    path:`/videos/${id}`
-  },(error,body,status,headers)=>{
-    const selects = {files:body.files, pictures:body.pictures.sizes}
-    if(error){
-      console.log('error', error)
-    } else {
-      // console.log('body', selects)
-      console.log(status, headers)
-      return selects
-    }
+  // const request = lib.request({
+  //   method:"GET",
+  //   path:`/videos/${id}`
+  // },(error,body,status,headers)=>{
+  //   if(error){
+  //     console.log('error', error)
+  //   } else {
+  //     const selects = {files:body.files, pictures:body.pictures.sizes}
+  //     console.log('body', selects)
+  //     console.log(status, headers)
+  //     return selects
+  //   }
+  // })
+  // return request
+  return fetch(`${VIMEO_API}${id}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
+  .then((res)=>{ return res.json()
+    .then((body)=>[body.files, body.pictures.sizes])
   })
+
 }
 
 
