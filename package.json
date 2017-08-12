@@ -15,6 +15,7 @@
     "express-zero-config": "^1.1.2",
     "node-fetch": "^1.7.1",
     "nodemon": "^1.11.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "vimeo": "^1.2.1"
   }
 }
