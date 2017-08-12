@@ -25,7 +25,7 @@ router.get('/pro/video/:id', (req,res)=>{
   legitMP4(req.params.id)
   .then(json=>{
     console.log(json)
-    return res.json(json)})
+    return json})
   .catch(err=>console.log(err))
 })
 
