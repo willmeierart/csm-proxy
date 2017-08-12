@@ -4,7 +4,10 @@ const fetch = require('node-fetch')
 const cors = require('cors')
 const {fetchData, getMP4, legitMP4} = require('./proxy')
 const router = ezc.createRouter()
-router.use(cors())
+router.use(cors({
+  credentials: true,
+  origin: '*'
+}))
 
 router.get('/', (req,res)=>{
   fetchData()
