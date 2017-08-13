@@ -40,16 +40,9 @@ function legitMP4(id){
   //   }
   // })
   // return request
-
   return fetch(`${VIMEO_API}${id}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
   .then((res)=>{ return res.json()
-    .then((body)=>{
-      const data = [body.files, body.pictures.sizes]
-      const precise = data.forEach(item=>{
-        return item.sort((a,b)=>b.width-a.width)
-      })
-      return {HD:precise[0][0],thumb:precise[1][0]}
-    })
+    .then((body)=>[body.files, body.pictures.sizes])
   })
 
 }

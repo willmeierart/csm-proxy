@@ -4,10 +4,7 @@ const fetch = require('node-fetch')
 const cors = require('cors')
 const {fetchData, getMP4, legitMP4} = require('./proxy')
 const router = ezc.createRouter()
-router.use(cors({
-  credentials: true,
-  origin: '*'
-}))
+router.use(cors())
 
 router.get('/', (req,res)=>{
   fetchData()
@@ -24,12 +21,13 @@ router.get('/video/:id', (req,res)=>{
 })
 
 router.get('/pro/video/:id', (req,res)=>{
-  console.log(req.params.id);
   legitMP4(req.params.id)
-  .then(json=>{
-    console.log(json);
-    return res.json(json)})
-  .catch(err=>console.log(err))
+  .then(data=>{
+    const precise = data.map((item)=>{
+      return item.sort((a,b)=>{return b.width-a.width})
+    })
+    return {HD:precise[0][0],thumb:precise[1][0]}
+  }).catch(err=>console.log(err))
 })
 
 ezc.startServer(router)
