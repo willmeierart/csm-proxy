@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const API_URL = process.env.API_URL
 
 const VIMEO = 'https://player.vimeo.com/video/'
-const VIMEO_API = 'https://api.vimeo.com/videos/'
+const VIMEO_API = 'https://api.vimeo.com'
 const {Vimeo} = require('vimeo')
 const {CLIENT_ID} = process.env
 const {CLIENT_SECRET} = process.env
@@ -26,9 +26,26 @@ function getMP4(id){
 }
 
 function legitMP4(id){
-  return fetch(`${VIMEO_API}${id}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
+  return fetch(`${VIMEO_API}/videos/${id}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
   .then((res)=>{ return res.json()
-    .then((body)=>[body.files, body.pictures.sizes, body.text_tracks])
+    .then((body)=>{
+      let validData = [body.files, body.pictures.sizes]
+      if(body.metadata.connections.texttracks){
+        const captionsPath = body.metadata.connections.texttracks.uri
+        return fetch(`${VIMEO_API}${captionsPath}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
+        .then((result)=>{return result.json()
+          .then((captions)=>{
+            // console.log(captions);
+            const CAPS = captions.data.map((cap)=>{
+              return [{file:cap.link,url:`https://player.vimeo.com${cap.uri}`}]
+            })
+            validData = validData.concat(CAPS)
+            console.log(captions.data);
+            return validData
+          }
+          )})
+      } else {return validData}
+    })
   })
 
 }

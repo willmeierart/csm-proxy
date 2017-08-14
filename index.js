@@ -23,8 +23,12 @@ router.get('/video/:id', (req,res)=>{
 router.get('/pro/video/:id', (req,res)=>{
   legitMP4(req.params.id)
   .then(data=>{
+    console.log(data);
     const precise = data.map((item)=>{
-      return item.sort((a,b)=>{return b.width-a.width})
+      if (item){
+        return item.sort((a,b)=>{return b.width-a.width})
+      }
+
     })
     const HQobj = {HD:precise[0][0],thumb:precise[1][0],captions:precise[2]}
     return res.json(HQobj)
