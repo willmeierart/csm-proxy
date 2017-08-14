@@ -21,28 +21,14 @@ function fetchData(){
 function getMP4(id){
   return fetch(`${VIMEO}${id}/config`)
   .then((res)=>{
-    return res.json().then((json)=>[json.request.files.progressive,json.video.thumbs.base])
+    return res.json().then((json)=>[json.request.files.progressive,json.video.thumbs.base,json.request.text_tracks])
   })
 }
 
 function legitMP4(id){
-  // const request = lib.request({
-  //   method:"GET",
-  //   path:`/videos/${id}`
-  // },(error,body,status,headers)=>{
-  //   if(error){
-  //     console.log('error', error)
-  //   } else {
-  //     const selects = {files:body.files, pictures:body.pictures.sizes}
-  //     console.log('body', selects)
-  //     console.log(status, headers)
-  //     return selects
-  //   }
-  // })
-  // return request
   return fetch(`${VIMEO_API}${id}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
   .then((res)=>{ return res.json()
-    .then((body)=>[body.files, body.pictures.sizes])
+    .then((body)=>[body.files, body.pictures.sizes, body.text_tracks])
   })
 
 }

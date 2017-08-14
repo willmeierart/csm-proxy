@@ -26,8 +26,7 @@ router.get('/pro/video/:id', (req,res)=>{
     const precise = data.map((item)=>{
       return item.sort((a,b)=>{return b.width-a.width})
     })
-    const HQobj = {HD:precise[0][0],thumb:precise[1][0]}
-    console.log(HQobj)
+    const HQobj = {HD:precise[0][0],thumb:precise[1][0],captions:precise[2]}
     return res.json(HQobj)
   }).catch(err=>console.log(err))
 })
