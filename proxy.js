@@ -11,6 +11,15 @@ const {CLIENT_SECRET} = process.env
 const {ACCESS_TOKEN} = process.env
 const lib = new Vimeo(CLIENT_ID, CLIENT_SECRET, ACCESS_TOKEN)
 
+function getVideoData(id){
+  const vimSplit = id.split('/')
+  const ID = vimSplit[vimSplit.length-1]
+  const VIMEO_DATA_URL = `https://vimeo.com/api/v2/video/${ID}.json`
+  return fetch(VIMEO_DATA_URL).then((res)=>{
+    return res.json().then((json)=> json)
+  })
+}
+
 function fetchData(){
   return fetch(API_URL)
     .then((res)=>{
@@ -27,7 +36,8 @@ function getMP4(id){
 
 function legitMP4(id){
   return fetch(`${VIMEO_API}/videos/${id}`, {method:'GET', headers:{Authorization:`Bearer ${ACCESS_TOKEN}`}})
-  .then((res)=>{ return res.json()
+  .then((res)=>{
+    return res.json()
     .then((body)=>{
       let validData = [body.files, body.pictures.sizes]
       if(body.metadata.connections.texttracks){
@@ -51,4 +61,4 @@ function legitMP4(id){
 }
 
 
-module.exports = {fetchData, getMP4, legitMP4}
+module.exports = {fetchData, getMP4, legitMP4, getVideoData}
